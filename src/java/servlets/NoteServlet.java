@@ -73,6 +73,8 @@ public class NoteServlet extends HttpServlet {
         Note noteObj = new Note(title,content);
         request.setAttribute("noteObj", noteObj);
         // Defining the paath of the txt file
+        
+        
        
         // write to the file
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path,false)));
@@ -80,6 +82,17 @@ public class NoteServlet extends HttpServlet {
         pw.write('\n');
         pw.write(noteObj.getContent());
         pw.close();
+        
+        
+        if( title == null || title.equals("") || content == null || content.equals("") ){
+            //set a flag to let jsp know the validation has been tripped
+            request.setAttribute("errorMessage", true);
+            request.getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request, response);
+            
+       
+        }
+        
+        
         
         getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         return;
